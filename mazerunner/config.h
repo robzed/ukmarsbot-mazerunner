@@ -43,15 +43,15 @@ const bool USER_MODE = false;
 //***************************************************************************//
 // We need to know about the drive mechanics.
 
-const float WHEEL_DIAMETER = 33.298; // Adjust on test
+const float WHEEL_DIAMETER = 32.5; // Adjust on test
 const float ENCODER_PULSES = 12.0;
-const float GEAR_RATIO = 19.54;
+const float GEAR_RATIO = 19.5;
 
 // Mouse radius is the distance between the contact patches of the drive wheels.
 // A good starting approximation is half the distance between the wheel centres.
 // After testing, you may find the working value to be larger or smaller by some
 // small amount.
-const float MOUSE_RADIUS = 39.50; // Adjust on test
+const float MOUSE_RADIUS = 37.6; // Adjust on test
 
 // The robot is likely to have wheels of different diameters and that must be
 // compensated for if the robot is to reliably drive in a straight line
@@ -79,14 +79,14 @@ const float SPEED_FF = (1.0 / 280.0);
 const float BIAS_FF = (23.0 / 280.0);
 
 // encoder polarity is set to account for reversal of the encoder phases
-const int ENCODER_LEFT_POLARITY = (-1);
-const int ENCODER_RIGHT_POLARITY = (1);
+const int ENCODER_LEFT_POLARITY = (1);
+const int ENCODER_RIGHT_POLARITY = (-1);
 
 // similarly, the motors may be wired with different polarity and that
 // is defined here so that setting a positive voltage always moves the robot
 // forwards
-const int MOTOR_LEFT_POLARITY = (1);
-const int MOTOR_RIGHT_POLARITY = (-1);
+const int MOTOR_LEFT_POLARITY = (-1);
+const int MOTOR_RIGHT_POLARITY = (1);
 
 //***************************************************************************//
 
