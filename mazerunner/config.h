@@ -101,11 +101,11 @@ const float DEFAULT_SEARCH_ACCEL = 2000;
 //***** SENSOR CALIBRATION **************************************************//
 // wall sensor thresholds and constants
 // RAW values for the front sensor when the robot is backed up to a wall
-const int FRONT_CALIBRATION = 70;
+const int FRONT_CALIBRATION = 38; // RobP - raw values 10Apr2021 @TODO - why is this different?
 // RAW values for the side sensors when the robot is centred in a cell
 // and there is no wall ahead
-const int LEFT_CALIBRATION = 97;
-const int RIGHT_CALIBRATION = 92;
+const int LEFT_CALIBRATION = 200;  // RobP - raw values 10Apr2021
+const int RIGHT_CALIBRATION = 218; // RobP - raw values 10Apr2021
 
 // This is the normalised value seen by the front sensor when the mouse is
 // in its calibration position
