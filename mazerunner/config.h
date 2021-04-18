@@ -43,9 +43,9 @@ const bool USER_MODE = false;
 //***************************************************************************//
 // We need to know about the drive mechanics.
 
-const float WHEEL_DIAMETER = 32.5; // Adjust on test
+const float WHEEL_DIAMETER = 34.23; // Adjust on test
 const float ENCODER_PULSES = 12.0;
-const float GEAR_RATIO = 19.5;
+const float GEAR_RATIO = 19.54;
 
 // Mouse radius is the distance between the contact patches of the drive wheels.
 // A good starting approximation is half the distance between the wheel centres.
