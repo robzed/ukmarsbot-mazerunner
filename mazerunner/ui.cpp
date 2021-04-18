@@ -172,6 +172,24 @@ int cli_run_user(const Args args) {
   return T_OK;
 }
 
+int move_test(const Args args) {
+  if (args.argc != 2) {
+    return T_UNEXPECTED_TOKEN;
+  }
+  int distance = -1;
+  read_integer(args.argv[1], distance);
+  Serial.print("Move ");
+  Serial.println(distance);
+  if (distance < 0) {
+    return T_UNEXPECTED_TOKEN;
+  }
+
+  extern void move_test(int distance);
+  move_test(distance);
+
+  return T_OK;
+}
+
 int cli_settings_command(const Args &args) {
   if (args.argc == 1) {
     dump_settings(5);
@@ -305,6 +323,9 @@ void cli_interpret(const Args &args) {
       case 'U':
         cli_run_user(args);
         break;
+
+      case 'M':
+        move_test(args);
       default:
         break;
     }

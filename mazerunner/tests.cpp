@@ -194,6 +194,23 @@ void test_fwd_move() {
 
 //***************************************************************************//
 
+void move_test(int distance) {
+  float distance_f = distance; // mm
+  float max_speed = 500.0;     // mm/s
+  float acceleration = 500.0;  // mm/s/s
+
+  reset_drive_system();
+
+  enable_motor_controllers();
+
+  forward.start(distance_f, max_speed, 0, acceleration);
+  while (not forward.is_finished()) {
+  }
+  reset_drive_system();
+}
+
+//***************************************************************************//
+
 /** TEST 10
  *
  * @brief move forward n cells, about face, return
