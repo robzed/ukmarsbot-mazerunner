@@ -4,7 +4,7 @@
  * File Created: Tuesday, 16th March 2021 10:17:18 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Wednesday, 7th April 2021 3:47:15 pm
+  * Last Modified: Wednesday, 14th April 2021 12:59:27 pm
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -402,9 +402,122 @@ void test_steering_lock() {
  *
  */
 void test_15() {
-  // hwat could we do here?
+  // what could we do here?
 }
 
+//***************************************************************************//
+/**
+ * By turning in place through 360 degrees, it should be possible to get a
+ * sensor calibration for all sensors?
+ *
+ * At the least, it will tell you about the range of values reported and help
+ * with alignment, You should be able to see clear maxima 180 degrees apart as
+ * well as the left and right values crossing when the robot is parallel to
+ * walls either side.
+ *
+ * Use either the normal report_sensor_track() for the normalised readings
+ * or report_sensor_track_raw() for the readings straight off the sensor.
+ *
+ * Sensor sensitivity should be set so that the peaks from raw readings do
+ * not exceed about 700-800 so that there is enough headroom to cope with
+ * high ambient light levels.
+ *
+ * @brief turn in place while streaming sensors
+ */
+
+void test_sensor_spin_calibrate() {
+  enable_sensors();
+  delay(100);
+  reset_drive_system();
+  enable_motor_controllers();
+  disable_steering();
+  report_sensor_track_header();
+  rotation.start(360, 180, 0, 1800);
+  while (not rotation.is_finished()) {
+    report_sensor_track_raw();
+  }
+  reset_drive_system();
+  disable_sensors();
+  delay(100);
+}
+
+//***************************************************************************//
+/**
+ * Edge detection test displays the position at which an edge is found when
+ * the robot is travelling down a straight.
+ *
+ * Start with the robot backed up to a wall.
+ * Runs forward for 150mm and records the robot position when the trailing
+ * edge of the adjacent wall(s) is found.
+ *
+ * The value is only recorded to the nearest millimeter to avoid any
+ * suggestion of better accuracy than that being available.
+ *
+ * Note that UKMARSBOT, with its back to a wall, has its wheels 43mm from
+ * the cell boundary.
+ *
+ * This value can be used to permit forward error correction of the robot
+ * position while exploring.
+ *
+ * @brief find sensor wall edge detection positions
+ */
+
+void test_edge_detection() {
+  bool left_edge_found = false;
+  bool right_edge_found = false;
+  int left_edge_position = 0;
+  int right_edge_position = 0;
+  int left_max = 0;
+  int right_max = 0;
+  enable_sensors();
+  delay(100);
+  reset_drive_system();
+  enable_motor_controllers();
+  disable_steering();
+  Serial.println(F("Edge positions:"));
+  forward.start(150, 100, 0, 1000);
+  while (not forward.is_finished()) {
+    if (g_left_wall_sensor > left_max) {
+      left_max = g_left_wall_sensor;
+    }
+
+    if (g_right_wall_sensor > right_max) {
+      right_max = g_right_wall_sensor;
+    }
+
+    if (not left_edge_found) {
+      if (g_left_wall_sensor < left_max / 2) {
+        left_edge_position = int(0.5 + forward.position());
+        left_edge_found = true;
+      }
+    }
+    if (not right_edge_found) {
+      if (g_right_wall_sensor < right_max / 2) {
+        right_edge_position = int(0.5 + forward.position());
+        right_edge_found = true;
+      }
+    }
+    delay(5);
+  }
+  Serial.print(F("Left: "));
+  if (left_edge_found) {
+    Serial.print(BACK_WALL_TO_CENTER + left_edge_position);
+  } else {
+    Serial.print('-');
+  }
+
+  Serial.print(F("  Right: "));
+  if (right_edge_found) {
+    Serial.print(BACK_WALL_TO_CENTER + right_edge_position);
+  } else {
+    Serial.print('-');
+  }
+  Serial.println();
+
+  reset_drive_system();
+  disable_sensors();
+  delay(100);
+}
 //***************************************************************************//
 /** Test runner
  *
@@ -469,6 +582,12 @@ void run_test(int test) {
       break;
     case 15:
       test_15();
+      break;
+    case (20):
+      test_edge_detection();
+      break;
+    case (21):
+      test_sensor_spin_calibrate();
       break;
     default:
       disable_sensors();
