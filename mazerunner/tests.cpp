@@ -359,7 +359,7 @@ void test_stop_at() {
  */
 void test_sprint_with_steering() {
   // sensor calibration
-  float distance = 5 * 180.0;  // mm
+  float distance = 4 * 180.0;  // mm
   float max_speed = 800.0;     // mm/s
   float acceleration = 2000.0; // mm/s/s
   enable_sensors();
