@@ -103,7 +103,8 @@ inline void wait_for_button_click() {
 inline void wait_for_front_sensor() {
   enable_sensors();
   while (g_front_wall_sensor < 250) {
-    delay(10);
+    delay(200);
+    Serial.println(g_front_wall_sensor);
   }
   while (g_front_wall_sensor > 200) {
     delay(10);

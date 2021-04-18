@@ -75,9 +75,12 @@ void loop() {
   }
   if (button_pressed()) {
     wait_for_button_release();
+    Serial.println(F("Button"));
     int function = get_switches();
     if (function > 1) {
+      Serial.println(F("W-Sen"));
       wait_for_front_sensor(); // cover front sensor with hand to start
+      Serial.println(F("Sen"));
     }
     if (USER_MODE) {
       run_mouse(function);
