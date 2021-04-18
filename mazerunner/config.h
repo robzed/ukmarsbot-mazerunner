@@ -55,7 +55,7 @@ const float MOUSE_RADIUS = 37.6; // Adjust on test
 
 // The robot is likely to have wheels of different diameters and that must be
 // compensated for if the robot is to reliably drive in a straight line
-const float ROTATION_BIAS = 0.0025; // Negative makes robot curve to left
+const float ROTATION_BIAS = 0.0; // Negative makes robot curve to left
 
 //***************************************************************************//
 
