@@ -190,6 +190,24 @@ int move_test(const Args args) {
   return T_OK;
 }
 
+int circle_test(const Args args) {
+  if (args.argc != 2) {
+    return T_UNEXPECTED_TOKEN;
+  }
+  int diameter = -1;
+  read_integer(args.argv[1], diameter);
+  Serial.print("Circle ");
+  Serial.println(diameter);
+  if (diameter < 0) {
+    return T_UNEXPECTED_TOKEN;
+  }
+
+  extern void test_circle(float circle_diameter_in_mm);
+  test_circle(diameter);
+
+  return T_OK;
+}
+
 int cli_settings_command(const Args &args) {
   if (args.argc == 1) {
     dump_settings(5);
@@ -326,6 +344,10 @@ void cli_interpret(const Args &args) {
 
       case 'M':
         move_test(args);
+
+      case 'C':
+        circle_test(args);
+
       default:
         break;
     }

@@ -62,6 +62,45 @@ void user_log_front_sensor() {
   disable_sensors();
 }
 
+/** Circle Test
+ *
+ * radius = v/w, where w, the angular velocity, is in radians per second.
+ *
+ * w = w_radians = (pi/180) * w_degrees
+ *
+ * Therefore, assuming we want to adjust the
+ *
+ * diameter = 2*v/w = 2*v / ((pi/180)*w_degrees)
+ *         = 360/pi * v / w_degrees
+ *
+ * v/w_degrees = diameter * pi/360
+ *  v  = w_degreepersec * diameter * pi/360
+ *
+ * @brief move, smooth turn, move sequence
+ */
+void test_circle(float circle_diameter_in_mm) {
+  float angle = 360;
+  float deg_per_sec = 180;
+  float turn_speed = deg_per_sec * PI * circle_diameter_in_mm / 360;
+  reset_drive_system();
+  enable_motor_controllers();
+
+  // lead in - it takes only 45mm to get up to speed
+  forward.start(45, turn_speed, turn_speed, 1500);
+  while (not forward.is_finished()) {
+  }
+  // do the circle
+  rotation.start(-angle, deg_per_sec, 0, 4000);
+  while (not rotation.is_finished()) {
+  }
+  // lead out
+  forward.start(45, turn_speed, 0, 1500);
+  while (not forward.is_finished()) {
+  }
+
+  reset_drive_system();
+}
+
 void run_mouse(int function) {
   switch (function) {
     case 0:
@@ -73,7 +112,7 @@ void run_mouse(int function) {
       user_log_front_sensor();
       break;
     case 2:
-      // enter your function call here
+      test_circle(200);
       break;
     case 3:
       // enter your function call here
