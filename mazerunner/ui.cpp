@@ -219,7 +219,8 @@ int cli_settings_command(const Args &args) {
       case '$':
         for (int i = 0; i < get_settings_count(); i++) {
           print_setting_details(i, 5);
-          Serial.println(';');
+          Serial.print(F(";  // $"));
+          Serial.println(i);
         }
         return T_OK;
         break;
@@ -323,8 +324,12 @@ void cli_interpret(const Args &args) {
       case '$':
         cli_settings_command(args);
         break;
-      case 'w':
+      case 'W':
         print_maze_plain();
+        break;
+      case 'X':
+        Serial.println(F("Reset Maze"));
+        initialise_maze(emptyMaze);
         break;
       case 'R':
         print_maze_with_directions();

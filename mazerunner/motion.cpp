@@ -4,7 +4,7 @@
  * File Created: Wednesday, 24th March 2021 6:29:39 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Monday, 5th April 2021 2:55:02 pm
+ * Last Modified: Friday, 30th April 2021 11:06:46 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -159,6 +159,29 @@ void stop_after(float distance) {
   }
 }
 
+/**
+ * The robot is assumed to be moving. This utility function call will just
+ * do a busy-wait until the forward profile gets to the supplied position.
+ *
+ * @brief wait until the given position is reached
+ */
+void wait_until_position(float position) {
+  while (forward.position() < position) {
+    delay(2);
+  }
+}
+
+/**
+ * The robot is assumed to be moving. This utility function call will just
+ * do a busy-wait until the forward profile has moved by the given distance.
+ *
+ * @brief wait until the given distance has been travelled
+ */
+void wait_until_distance(float distance) {
+  float target = forward.position() + distance;
+  wait_until_position(target);
+}
+
 //***************************************************************************//
 
 /**
@@ -200,7 +223,7 @@ void stop_after(float distance) {
  *
  * @brief performs an integrated, smooth left turn at low speed.
  */
-void turn_SS90EL() {
+void turn_SS90L_example() {
   float run_in = 20.0;       // mm
   float run_out = 20.0;      // mm
   float turn_speed = 300;    // mm/s
@@ -230,7 +253,7 @@ void turn_SS90EL() {
  *
  * @brief performs an integrated, smooth right turn at low speed.
  */
-void turn_SS90ER() {
+void turn_SS90R_example() {
   float run_in = 20.0;       // mm
   float run_out = 20.0;      // mm
   float turn_speed = 300;    // mm/s

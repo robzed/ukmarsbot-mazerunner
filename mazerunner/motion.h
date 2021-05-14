@@ -1,10 +1,10 @@
 /*
  * File: motion.h
- * Project: vw-control
+ * Project: mazerunner
  * File Created: Wednesday, 24th March 2021 6:29:08 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Thursday, 25th March 2021 10:31:56 pm
+ * Last Modified: Friday, 30th April 2021 11:06:46 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -41,9 +41,11 @@ void turn(float angle, float omega, float alpha);
 
 void stop_at(float distance);
 void stop_after(float distance);
+void wait_until_position(float position);
+void wait_until_distance(float distance);
 
-void turn_SS90EL();
-void turn_SS90ER();
+void turn_SS90L_example();
+void turn_SS90R_example();
 void turn_around();
 void spin_turn(float degrees, float speed, float acceleration);
 

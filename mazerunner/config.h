@@ -4,7 +4,7 @@
  * File Created: Monday, 29th March 2021 11:04:59 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Wednesday, 14th April 2021 1:12:15 pm
+ * Last Modified: Thursday, 6th May 2021 9:17:32 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -36,14 +36,14 @@
 #include <arduino.h>
 
 // force rewrite of EEPROM settings. Set this when developing
-#define ALWAYS_USE_DEFAULT_SETTINGS 1
+#define ALWAYS_USE_DEFAULT_SETTINGS 0
 //***************************************************************************//
-const bool USER_MODE = false;
+const bool USER_MODE = true;
 
 //***************************************************************************//
 // We need to know about the drive mechanics.
 
-const float WHEEL_DIAMETER = 32.35; // Adjust on test
+const float WHEEL_DIAMETER = 31.966; //33.298; // Adjust on test
 const float ENCODER_PULSES = 12.0;
 const float GEAR_RATIO = 19.54;
 
@@ -51,7 +51,7 @@ const float GEAR_RATIO = 19.54;
 // A good starting approximation is half the distance between the wheel centres.
 // After testing, you may find the working value to be larger or smaller by some
 // small amount.
-const float MOUSE_RADIUS = 37.6; // Adjust on test
+const float MOUSE_RADIUS = 37.92; //39.50; // Adjust on test
 
 // The robot is likely to have wheels of different diameters and that must be
 // compensated for if the robot is to reliably drive in a straight line
@@ -70,8 +70,8 @@ const float ROT_KP = 2.1;
 const float ROT_KD = 1.2;
 
 // controller constants for the steering controller
-const float STEERING_KP = 1.0;
-const float STEERING_KD = 1.0;
+const float STEERING_KP = 0.25;
+const float STEERING_KD = 0.00;
 const float STEERING_ADJUST_LIMIT = 10.0; // deg/s
 
 // Motor Feedforward
@@ -119,16 +119,16 @@ const float LEFT_SCALE = (float)LEFT_NOMINAL / LEFT_CALIBRATION;
 const float RIGHT_SCALE = (float)RIGHT_NOMINAL / RIGHT_CALIBRATION;
 
 // the values above which, a wall is seen
-const int LEFT_THRESHOLD = 40;  // minimum value to register a wall
-const int FRONT_THRESHOLD = 20; // minimum value to register a wall
-const int RIGHT_THRESHOLD = 40; // minimum value to register a wall
-
+const int LEFT_THRESHOLD = 40;   // minimum value to register a wall
+const int FRONT_THRESHOLD = 20;  // minimum value to register a wall
+const int RIGHT_THRESHOLD = 40;  // minimum value to register a wall
+const int FRONT_REFERENCE = 850; // reading when mouse centered with wall ahead
 //***************************************************************************//
 //***************************************************************************//
 // Some physical constants that are likely to be board -specific
 
 // with robot against back wall, how much travel is there to the cell center?
-const int BACK_WALL_TO_CENTER = 47;
+const int BACK_WALL_TO_CENTER = 48;
 
 //***************************************************************************//
 
@@ -138,14 +138,14 @@ const float LOOP_INTERVAL = (1.0 / LOOP_FREQUENCY);
 
 //***************************************************************************//
 // change the revision if the settings structure changes to force rewrte of EEPROM
-const int SETTINGS_REVISION = 10319;
+const int SETTINGS_REVISION = 10429;
 const uint32_t BAUDRATE = 115200;
 const int DEFAULT_DECIMAL_PLACES = 5;
 const int EEPROM_ADDR_SETTINGS = 0x0000;
 
 //***************************************************************************//
 // set this to zero to disable profile data logging over serial
-#define DEBUG_LOGGING 1
+#define DEBUG_LOGGING 0
 // time between logged lined when reporting is enabled (milliseconds)
 const int REPORTING_INTERVAL = 10;
 

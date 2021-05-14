@@ -96,6 +96,20 @@ class Profile {
     m_state = CS_ACCELERATING;
   }
 
+  void stop() {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+      m_target_speed = 0;
+    }
+    finish();
+  }
+
+  void finish() {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+      m_speed = m_target_speed;
+      m_state = CS_FINISHED;
+    }
+  }
+
   void set_state(ProfileState state) { m_state = state; }
 
   float get_braking_distance() {
@@ -186,7 +200,7 @@ class Profile {
     }
     // increment the position
     m_position += m_speed * LOOP_INTERVAL;
-    if (remaining < 0.125) {
+    if (m_state != CS_FINISHED && remaining < 0.125) {
       m_state = CS_FINISHED;
       m_target_speed = m_final_speed;
     }
