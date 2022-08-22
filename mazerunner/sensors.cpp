@@ -167,7 +167,7 @@ void disable_sensors() {
 //***************************************************************************//
 
 void update_battery_voltage() {
-  g_battery_voltage = battery_adc_reading * (2.0 * 5.0 / 1024.0);
+  g_battery_voltage = BATTERY_MULTIPLIER * battery_adc_reading;
   g_battery_scale = 255.0 / g_battery_voltage;
 }
 /*********************************** Wall tracking **************************/
@@ -276,6 +276,13 @@ void start_sensor_cycle() {
  * After that, all channels are read again to get the lit values.
  * After all the channels have been read twice, the ADC interrupt is disabbled
  * and the sensors are idle until triggered again.
+ *
+ * The ADC service runs all th etime even with the sensors 'disabled'. In this
+ * software, 'enabled' only means that the emitters are turned on in the second 
+ * phase. Without that, you might expect the sensor readings to be zero.
+ * 
+ * Timing tests indicate that the sensor ISR consumes no more that 5% of the
+ * available system bandwidth.
  *
  * There are actually 16 available channels and channel 8 is the internal
  * temperature sensor. Channel 15 is Gnd. If appropriate, a read of channel

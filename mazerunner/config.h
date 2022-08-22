@@ -38,7 +38,16 @@
 // force rewrite of EEPROM settings. Set this when developing
 #define ALWAYS_USE_DEFAULT_SETTINGS 0
 //***************************************************************************//
-const bool USER_MODE = true;
+// USER_MODE tells the software whether to run the built-in tests or custom 
+// user-provided routines. When set to false, execution is directed to the 
+// function run_tests() in tests.cpp. this is the default and it is where all
+// the setup and configuration can be done.
+// when you are ready to try your own code, change the values of USER_MODE to be 
+// true and execution will be directed to the function run_mouse() in user.cpp.
+// In that file you will find some examples that you can modify, extend or
+// replace as you see fit.
+
+const bool USER_MODE = false;
 
 //***************************************************************************//
 // We need to know about the drive mechanics.
@@ -59,6 +68,38 @@ const float ROTATION_BIAS = 0.0; // Negative makes robot curve to left
 
 //***************************************************************************//
 
+//***************************************************************************//
+// Battery resistor bridge //Derek Hall//
+// The battery measurement is performed by first reducing the battery voltage
+// with a potential divider formed by two resistors. Here they are named R1 and R2
+// though that may not be their designation on the schematics.
+//
+// Resistor R1 is the high-side resistor and connects to the battery supply
+// Resistor R2 is the low-side resistor and connects to ground
+// Battery voltage is measured at the junction of these resistors
+// The ADC port used for the conversion will have a full scale reading (FSR) that
+// depends on the device being used. Typically that will be 1023 for a 10-bit ADC as
+// found on an Arduino but it may be 4095 if you have a 12-bit ADC.
+// Finally, the ADC converter on your processor will have a reference voltage. On
+// the Arduinos for example, this is 5 Volts. Thus, a full scale reading of
+// 1023 would represent 5 Volts, 511 would be 2.5Volts and so on.
+//
+// in this section you can enter the appropriate values for your ADC and potential
+// divider setup to ensure that the battery voltage reading performed by the sensors
+// is as accurate as possible.
+//
+// By calculating the battery multiplier here, you can be sure that the actual
+// battery voltage calulation is done as efficiently as possible.
+// The compiler will do all these calculations so your program does not have to.
+
+const float BATTERY_R1 = 10000.0; //resistor to battery +
+const float BATTERY_R2 = 10000.0; //resistor to Gnd
+const float BATTERY_DIVIDER_RATIO = BATTERY_R2 / (BATTERY_R1 + BATTERY_R2);
+const float ADC_FSR = 1023.0;    //The maximum reading for the ADC
+const float ADC_REF_VOLTS = 5.0; //Reference voltage of ADC
+
+const float BATTERY_MULTIPLIER = (ADC_REF_VOLTS / ADC_FSR / BATTERY_DIVIDER_RATIO);
+
 //*** MOTION CONTROL CONSTANTS **********************************************//
 
 // forward motion controller constants
@@ -75,6 +116,22 @@ const float STEERING_KD = 0.00;
 const float STEERING_ADJUST_LIMIT = 10.0; // deg/s
 
 // Motor Feedforward
+/***
+ * Speed Feedforward is used to add a drive voltage proportional to the motor speed
+ * The units are Volts per mm/s and the value will be different for each 
+ * robot where the motor + gearbox + wheel diamter + robot weight are different
+ * You can experimentally determine a suitable value by turning off the controller
+ * and then commanding a set voltage to the motors. The same voltage is applied to 
+ * each motor. Have the robot report its speed regularly or have it measure
+ * its steady state speed after a period of acceleration.
+ * Do this for several applied voltages from 0.5Volts to 3 Volts in steps of 0.5V
+ * Plot a chart of steady state speed against voltage. The slope of that graph is 
+ * the speed feedforward, SPEED_FF.
+ * Note that the line will not pass through the origin because there will be
+ * some minimum voltage needed just to ovecome friction and get the wheels to turn at all.
+ * That minimum voltage is the BIAS_FF. It is not dependent upon speed but is expressed
+ * here as a fraction for comparison.
+ */
 const float SPEED_FF = (1.0 / 280.0);
 const float BIAS_FF = (23.0 / 280.0);
 
