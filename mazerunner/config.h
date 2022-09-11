@@ -33,28 +33,28 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include <arduino.h>
+#include <Arduino.h>
 
 // force rewrite of EEPROM settings. Set this when developing
 #define ALWAYS_USE_DEFAULT_SETTINGS 0
 //***************************************************************************//
-// USER_MODE tells the software whether to run the built-in tests or custom 
-// user-provided routines. When set to false, execution is directed to the 
+// USER_MODE tells the software whether to run the built-in tests or custom
+// user-provided routines. When set to false, execution is directed to the
 // function run_tests() in tests.cpp. this is the default and it is where all
 // the setup and configuration can be done.
-// when you are ready to try your own code, change the values of USER_MODE to be 
+// when you are ready to try your own code, change the values of USER_MODE to be
 // true and execution will be directed to the function run_mouse() in user.cpp.
 // In that file you will find some examples that you can modify, extend or
 // replace as you see fit.
 
-const bool USER_MODE = false;
+const bool USER_MODE = true;
 
 //***************************************************************************//
 // We need to know about the drive mechanics.
 
 const float WHEEL_DIAMETER = 31.966; //33.298; // Adjust on test
 const float ENCODER_PULSES = 12.0;
-const float GEAR_RATIO = 19.54;
+const float GEAR_RATIO = 11.4; //19.54;
 
 // Mouse radius is the distance between the contact patches of the drive wheels.
 // A good starting approximation is half the distance between the wheel centres.
@@ -67,6 +67,10 @@ const float MOUSE_RADIUS = 37.92; //39.50; // Adjust on test
 const float ROTATION_BIAS = 0.0; // Negative makes robot curve to left
 
 //***************************************************************************//
+
+// This is the size fo each cell in the maze. Normally 180mm for a classic maze
+const float FULL_CELL = 180.0f;
+const float HALF_CELL = FULL_CELL / 2.0;
 
 //***************************************************************************//
 // Battery resistor bridge //Derek Hall//
@@ -158,6 +162,16 @@ const float DEFAULT_SEARCH_ACCEL = 2000;
 //***** SENSOR CALIBRATION **************************************************//
 // wall sensor thresholds and constants
 // RAW values for the front sensor when the robot is backed up to a wall
+
+/* =======
+// From main
+const int FRONT_CALIBRATION = 82; //70;
+// RAW values for the side sensors when the robot is centred in a cell
+// and there is no wall ahead
+const int LEFT_CALIBRATION = 112; //97;
+const int RIGHT_CALIBRATION = 82; //92;
+========== */
+// Rob's mouse
 const int FRONT_CALIBRATION = 38; // RobP - raw values 10Apr2021 @TODO - why is this different?
 // RAW values for the side sensors when the robot is centred in a cell
 // and there is no wall ahead
@@ -195,7 +209,7 @@ const float LOOP_INTERVAL = (1.0 / LOOP_FREQUENCY);
 
 //***************************************************************************//
 // change the revision if the settings structure changes to force rewrte of EEPROM
-const int SETTINGS_REVISION = 10429;
+const int SETTINGS_REVISION = 107;
 const uint32_t BAUDRATE = 115200;
 const int DEFAULT_DECIMAL_PLACES = 5;
 const int EEPROM_ADDR_SETTINGS = 0x0000;
